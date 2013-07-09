@@ -2,7 +2,7 @@ Here's the idea behind this little project: consolidate docs, specs, and perform
 
 What?
 
-Like this:
+Like this. Say we have the following commented JavaScript method:
 
 ```javascript
 /**
@@ -25,7 +25,7 @@ function sum(numbers) {
 }
 ```
 
-The goal of Spectacular (*note to self: name is pretty weak; think about changing*) is to establish a conventional system whereby we can use JSDoc to parse the `@examples` annotation and automatically generate:
+The goal of Spectacular is to establish a system of conventions whereby we can use JSDoc to parse the `@examples` annotation and automatically generate:
 
 - documentation (duh)
 - specs, which will be *a part of* the documentation (e.g., you view it in a browser, you can see the specs passing/failing right there)
