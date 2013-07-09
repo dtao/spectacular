@@ -3,7 +3,11 @@
 var fs       = require('fs');
 var path     = require('path');
 var exec     = require('child_process').exec;
+
+var glob     = require('glob');
+var LESS     = require('less');
 var Mustache = require('mustache');
+var SASS     = require('sass');
 var wrench   = require('wrench');
 
 function ensureDirectoryExists(path) {
@@ -22,9 +26,13 @@ var directory = process.argv[2] || process.cwd();
 var config = JSON.parse(fs.readFileSync(path.join(directory, 'spectacular.json'), 'utf-8'));
 var mainPath = path.join(directory, config.main + '.js');
 var templatePath = path.join(__dirname, '../templates/spectacular');
+
+// TODO: It seriously just occurred to me that this script could use some good
+// ol' refactoring (already)!
+
 exec('jsdoc ' + mainPath + ' --template ' + templatePath, function(error, stdout) {
   if (error) {
-    console.log('Error: ' + error);
+    console.error(error);
     return;
   }
 
@@ -36,16 +44,59 @@ exec('jsdoc ' + mainPath + ' --template ' + templatePath, function(error, stdout
   if (config.assetDirs) {
     config.assetDirs.forEach(function(assetDir) {
       var folderName = path.basename(assetDir);
-      wrench.copyDirSyncRecursive(path.join(directory, assetDir), path.join(outputDir, folderName));
+      var source = path.join(directory, assetDir);
+      var destination = path.join(outputDir, folderName);
+      console.log('Copying ' + source + ' folder to ' + destination + '...');
+      wrench.copyDirSyncRecursive(source, destination, { forceDelete: true });
+
+      var lessFiles = glob.sync('*.less', { cwd: destination });
+      lessFiles.forEach(function(lessFile) {
+        console.log('Compiling ' + lessFile + '...');
+        var less = fs.readFileSync(path.join(destination, lessFile), 'utf-8');
+
+        var parser = new LESS.Parser({
+          paths: [destination],
+          filename: lessFile
+        });
+
+        parser.parse(less, function(err, tree) {
+          if (err) {
+            console.error(err);
+            return;
+          }
+
+          var basename = path.basename(lessFile, '.less');
+          fs.writeFileSync(path.join(destination, basename + '.css'), tree.toCSS());
+        });
+      });
+
+      var sassFiles = glob.sync('*.sass', { cwd: destination });
+      sassFiles.forEach(function(sassFile) {
+        console.log('Compiling ' + sassFile + '...');
+
+        // TODO: Figure out why this doesn't work so well using the sass module.
+        // var sass = fs.readFileSync(path.join(destination, sassFile), 'utf-8');
+        // var css = SASS.render(sass);
+        // var basename = path.basename(sassFile, '.sass');
+        // fs.writeFileSync(path.join(destination, basename + '.css'), css);
+
+        var basename = path.basename(sassFile, '.sass');
+        exec('sass ' + path.join(destination, sassFile) + ' ' + path.join(destination, basename + '.css'), function(err) {
+          if (err) {
+            console.error(err);
+          }
+        });
+      });
     });
   }
 
-  var mainFilename = path.basename(config.main);
+  var mainFilename = path.basename(config.main, '.js');
   copyFile(path.join(directory, config.main + '.js'), outputDir);
 
   var pageTemplate = fs.readFileSync(path.join(templatePath, 'index.mustache'), 'utf-8');
   var pageHtml = Mustache.render(pageTemplate, {
     title: config.title,
+    htmlTitle: config.htmlTitle || config.title,
     stylesheets: config.stylesheets,
     main: mainFilename,
     classes: data.classes,

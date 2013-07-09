@@ -8,8 +8,6 @@
     "img"
   ],
   "stylesheets": [
-    "css/bootstrap.css",
-    "css/bootstrap-responsive.css",
     "css/styles.css"
   ]
 }

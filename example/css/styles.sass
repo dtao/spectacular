@@ -1,0 +1,42 @@
+@import 'bootstrap'
+@import 'bootstrap-responsive'
+
+@import url(http://fonts.googleapis.com/css?family=Kite+One)
+
+$green: #41bb19
+
+main
+  @extend .container
+
+header
+  @extend .well
+  background-color: white
+  font-family: 'Kite One', serif
+
+  h1
+    color: $green
+    font-style: normal
+
+article.documentation
+  @extend .row
+
+section.navigation
+  @extend .span4
+  @extend [class*="span"]
+  nav
+    @extend .well
+    ul
+      @extend .nav
+      @extend .nav-list
+
+section.content
+  @extend .span8
+  @extend [class*="span"]
+
+table.specs
+  @extend .table
+  @extend .table-striped
+  @extend .table-hover
+  tr th:last-child,
+  tr td:last-child
+    width: 10%
