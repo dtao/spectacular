@@ -16,43 +16,52 @@
 <body>
     <!-- TODO: Change this to semantic HTML using SASS or LESS. -->
     <div class="container">
-        <h1 class="title">{{title}}</h1>
+        <div class="well">
+            <h1 class="title">{{title}}</h1>
+        </div>
 
-        <nav>
-            <ul class="methods">
+        <div class="row">
+            <div class="span4">
+                <div class="well">
+                    <ul class="nav nav-list">
+                        <li class="nav-header">Methods</li>
+                        {{#methods}}
+                        <li><a href="#{{name}}">{{name}}</a></li>
+                        {{/methods}}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="span8">
                 {{#methods}}
-                <li><a href="#{{name}}">{{name}}</a></li>
+                <section class="method" id="{{name}}">
+                    <h2 class="name">{{name}}</h2>
+
+                    <p class="description">{{description}}</p>
+
+                    {{#examples.length}}
+                    <h3>Examples</h3>
+                    <table class="specs table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Spec</th>
+                                <th>Result</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#examples}}
+                            <tr class="spec" id="spec-{{exampleId}}">
+                                <td class="description">{{description}}</td>
+                                <td class="result"></td>
+                            </tr>
+                            {{/examples}}
+                        </tbody>
+                    </table>
+                    {{/examples.length}}
+                </section>
                 {{/methods}}
-            </ul>
-        </nav>
-
-        {{#methods}}
-        <section class="method" id="{{name}}">
-            <h2 class="name">{{name}}</h2>
-
-            <p class="description">{{description}}</p>
-
-            {{#examples.length}}
-            <h3>Examples</h3>
-            <table class="specs table table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th>Spec</th>
-                        <th>Result</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{#examples}}
-                    <tr class="spec" id="spec-{{exampleId}}">
-                        <td class="description">{{description}}</td>
-                        <td class="result"></td>
-                    </tr>
-                    {{/examples}}
-                </tbody>
-            </table>
-            {{/examples.length}}
-        </section>
-        {{/methods}}
+            </div>
+        </div>
     </div>
 </body>
 
