@@ -4,13 +4,13 @@
 <head>
     <title>{{title}}</title>
     {{#stylesheets}}
-    <link rel="stylesheet" type="text/css" href="{{.}}" />
+    <link rel="stylesheet" type="text/css" href="{{{.}}}" />
     {{/stylesheets}}
 
     <script type="text/javascript" src="{{main}}.js"></script>
-    <script type="text/javascript" src="jasmine.js"></script>
-    <script type="text/javascript" src="{{main}}_spec.js"></script>
-    <script type="text/javascript" src="spec_reporter.js"></script>
+    <script type="text/javascript" src="spec/support/jasmine.js"></script>
+    <script type="text/javascript" src="spec/support/spec_reporter.js"></script>
+    <script type="text/javascript" src="spec/{{main}}_spec.js"></script>
 </head>
 
 <body>
@@ -24,15 +24,60 @@
             <div class="span4">
                 <div class="well">
                     <ul class="nav nav-list">
+                        {{#classes.length}}
+                        <li class="nav-header">Classes</li>
+                        {{#classes}}
+                        <li><a href="#{{name}}">{{name}}</a></li>
+                        {{/classes}}
+                        {{/classes.length}}
+
+                        {{#methods.length}}
                         <li class="nav-header">Methods</li>
                         {{#methods}}
                         <li><a href="#{{name}}">{{name}}</a></li>
                         {{/methods}}
+                        {{/methods.length}}
                     </ul>
                 </div>
             </div>
 
             <div class="span8">
+                {{#classes}}
+                <section class="class" id="{{name}}">
+                    <h2 class="name">{{name}}</h2>
+
+                    <p class="description">{{description}}</p>
+
+                    {{#methods}}
+                    <section class="method" id="{{name}}">
+                        <h2 class="name">{{name}}</h2>
+
+                        <p class="description">{{description}}</p>
+
+                        {{#examples.length}}
+                        <h3>Examples</h3>
+                        <table class="specs table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Spec</th>
+                                    <th>Result</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#examples}}
+                                <tr class="spec" id="spec-{{exampleId}}">
+                                    <td class="description">{{description}}</td>
+                                    <td class="result"></td>
+                                </tr>
+                                {{/examples}}
+                            </tbody>
+                        </table>
+                        {{/examples.length}}
+                    </section>
+                    {{/methods}}
+                </section>
+                {{/classes}}
+
                 {{#methods}}
                 <section class="method" id="{{name}}">
                     <h2 class="name">{{name}}</h2>

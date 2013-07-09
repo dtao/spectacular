@@ -1,4 +1,16 @@
-var fs       = require('fs');
+var fs = require('fs');
+
+function getClassData(doclet, doclets) {
+  var classData = getMethodData(doclet);
+
+  var nameMatcher = new RegExp('^' + classData.name);
+  classData.methods = doclets
+    .filter(function(doclet) { return doclet.kind === 'function'; })
+    .filter(function(doclet) { return nameMatcher.test(doclet.longname); })
+    .map(getMethodData);
+
+  return classData;
+}
 
 function getMethodData(doclet) {
   return {
@@ -71,9 +83,19 @@ exports.publish = function(data, opts) {
 
   var doclets = data().get();
 
+  var classes = doclets
+    .filter(function(doclet) { return doclet.kind === 'class'; })
+    .map(getClassData);
+
   var methods = doclets
     .filter(function(doclet) { return doclet.kind === 'function'; })
+    .filter(function(doclet) { return !(/#\./).test(doclet.longname); })
     .map(getMethodData);
 
-  console.log(JSON.stringify(methods));
+  var dataToPublish = {
+    classes: classes,
+    methods: methods
+  };
+
+  console.log(JSON.stringify(dataToPublish));
 };

@@ -28,7 +28,7 @@ exec('jsdoc ' + mainPath + ' --template ' + templatePath, function(error, stdout
     return;
   }
 
-  var methods   = JSON.parse(stdout);
+  var data = JSON.parse(stdout);
   var outputDir = path.join(directory, config.outputDir);
 
   ensureDirectoryExists(outputDir);
@@ -40,28 +40,32 @@ exec('jsdoc ' + mainPath + ' --template ' + templatePath, function(error, stdout
     });
   }
 
+  var mainFilename = path.basename(config.main);
   copyFile(path.join(directory, config.main + '.js'), outputDir);
-  copyFile(path.join(templatePath, 'jasmine.js'), outputDir);
-  copyFile(path.join(templatePath, 'spec_reporter.js'), outputDir);
 
   var pageTemplate = fs.readFileSync(path.join(templatePath, 'index.mustache'), 'utf-8');
   var pageHtml = Mustache.render(pageTemplate, {
     title: config.title,
     stylesheets: config.stylesheets,
-    main: config.main,
-    methods: methods
+    main: mainFilename,
+    classes: data.classes,
+    methods: data.methods
   });
   fs.writeFileSync(path.join(outputDir, 'index.html'), pageHtml);
 
   var specsTemplate = fs.readFileSync(path.join(templatePath, 'specs.mustache'), 'utf-8');
   var specJs = Mustache.render(specsTemplate, {
     title: config.title,
-    methods: methods
+    methods: data.methods
   });
 
   var specDirectory = path.join(outputDir, 'spec');
   ensureDirectoryExists(specDirectory);
 
-  var mainFilename = path.basename(config.main);
   fs.writeFileSync(path.join(specDirectory, mainFilename + '_spec.js'), specJs);
+
+  var specSupportDirectory = path.join(specDirectory, 'support');
+  ensureDirectoryExists(specSupportDirectory);
+  copyFile(path.join(templatePath, 'jasmine.js'), specSupportDirectory);
+  copyFile(path.join(templatePath, 'spec_reporter.js'), specSupportDirectory);
 });
