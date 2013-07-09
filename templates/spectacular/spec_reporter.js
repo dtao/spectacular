@@ -16,9 +16,11 @@ window.addEventListener('load', function() {
       message.textContent = failure.message;
       descriptionCell.appendChild(message);
 
-      var trace = document.createElement('pre');
+      var trace = document.createElement('textarea');
       trace.className = 'failure-trace';
-      trace.textContent = failure.trace.stack;
+      trace.readOnly = true;
+      trace.rows = 12;
+      trace.value = failure.trace.stack;
       descriptionCell.appendChild(trace);
     });
   }
