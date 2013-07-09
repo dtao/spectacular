@@ -90,11 +90,11 @@ exports.publish = function(data, opts) {
 
   var classes = doclets
     .filter(function(doclet) { return doclet.kind === 'class'; })
-    .map(getClassData);
+    .map(function(doclet) { return getClassData(doclet, doclets); });
 
   var methods = doclets
     .filter(function(doclet) { return doclet.kind === 'function'; })
-    .filter(function(doclet) { return !(/#\./).test(doclet.longname); })
+    .filter(function(doclet) { return !(/[#\.]/).test(doclet.longname); })
     .map(getMethodData);
 
   var dataToPublish = {
