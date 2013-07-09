@@ -12,15 +12,15 @@ function Maths() {}
  * @return {number} The sum of the numbers.
  *
  * @examples
- * Maths.sum([])           // => 0
- * Maths.sum([1])          // => 1
- * Maths.sum([1, 2, 3])    // => 6
+ * Maths.sum([])        // => 0
+ * Maths.sum([1])       // => 1
+ * Maths.sum([1, 2, 3]) // => 6
  *
- * Maths.sum(null)         // => (error)
- * Maths.sum(undefined)    // => (error)
+ * Maths.sum(null)      // => (error)
+ * Maths.sum(undefined) // => (error)
  *
  * @compareTo underscore
- * Maths.sum(numbers(100)) // => _.reduce(numbers(100), function(memo, num) { return memo + num; }, 0)
+ * Maths.sum(randomNumbers)   // => _.reduce(randomNumbers, function(memo, num) { return memo + num; }, 0)
  */
 Maths.sum = function(numbers) {
   var sum = 0;
@@ -82,6 +82,9 @@ Maths.median = function(numbers) {
 
 /**
  * Computes the mode (most common value) of an array of numbers.
+ *
+ * It occurred to me while implementing this that my implementation is stupid.
+ * Really doesn't matter, though, does it?
  *
  * @param {Array.<number>} numbers The numbers to average.
  * @return {number} The mode of the numbers.

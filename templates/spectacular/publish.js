@@ -36,17 +36,7 @@ function getShortExamples(doclet) {
     .filter(function(tag) { return tag.originalTitle === 'examples' })
     .map(function(tag) { return getExampleCases(tag.text); });
 
-  // Flatten example cases into one array.
-  var shortExamples = [];
-  exampleCases.forEach(function(cases) {
-    cases.forEach(function(exampleCase) {
-      if (typeof exampleCase !== 'undefined') {
-        shortExamples.push(exampleCase);
-      }
-    });
-  });
-
-  return shortExamples;
+  return flatten(exampleCases).filter(function(exampleCase) { return !!exampleCase; });
 }
 
 function getExampleCases(tag) {
@@ -54,7 +44,7 @@ function getExampleCases(tag) {
   return lines.map(getExampleCase);
 }
 
-function getExampleCase(text) {
+function getExampleCase(text, performSubstitutions) {
   var parts = text.split(/\s*\/{2}\s*=>\s*/, 2); // matches: '// =>'
 
   if (parts.length < 2) {
@@ -92,19 +82,45 @@ function getComparisonCase(tag) {
   var lines = tag.split('\n');
   var name = lines[0];
 
+  var examples = lines.slice(1).map(function(text) {
+    return [10, 100, 1000].map(function(size) {
+      var exampleCase = getExampleCase(text, true);
+      exampleCase.description = 'returns the same result as ' + name + ' for ' + exampleCase.actual;
+
+      var variables = text.match(/\b(?:numbers|randomNumbers)\b/g) || [];
+      exampleCase.declarations = variables.map(function(variable) {
+        return 'var ' + variable + ' = get' + capitalize(variable) + '(' + size + ')';
+      });
+
+      return exampleCase;
+    });
+  });
+
   return {
     name: name,
-    examples: lines.slice(1).map(function(text) {
-      var exampleCase = getExampleCase(text);
-      exampleCase.description = 'returns the same result as ' + name + ' for ' + exampleCase.actual;
-      return exampleCase;
-    })
+    examples: flatten(examples)
   };
 }
 
 var exampleIdCounter = 1;
 function getExampleId() {
   return exampleIdCounter++;
+}
+
+function flatten(array, flattened) {
+  flattened = flattened || [];
+  for (var i = 0; i < array.length; ++i) {
+    if (array[i] instanceof Array) {
+      flatten(array[i], flattened);
+    } else {
+      flattened.push(array[i]);
+    }
+  };
+  return flattened;
+}
+
+function capitalize(string) {
+  return string.charAt(0).toUpperCase() + string.substring(1);
 }
 
 exports.publish = function(data, opts) {

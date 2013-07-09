@@ -1,8 +1,16 @@
 describe("{{title}}", function() {
-  function numbers(size) {
+  function getNumbers(count) {
     var arr = [], i = 0;
-    while (i < size) {
+    while (i < count) {
       arr.push(i++);
+    }
+    return arr;
+  }
+
+  function getRandomNumbers(count) {
+    var arr = [], i = 0;
+    while (i < count) {
+      arr.push(Math.random());
     }
     return arr;
   }
@@ -28,9 +36,11 @@ describe("{{title}}", function() {
     describe("compared to {{name}}", function() {
       {{#examples}}
       it("{{{description}}}", function() {
-        var actual = {{{actual}}};
+        {{#declarations}}
+        {{{.}}};
+        {{/declarations}}
         var expected = {{{expected}}};
-        expect(actual).toEqual(expected);
+        expect({{{actual}}}).toEqual(expected);
       }).exampleId = {{exampleId}};
       {{/examples}}
     });
