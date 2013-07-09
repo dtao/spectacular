@@ -67,6 +67,8 @@ function getExampleId() {
 }
 
 exports.publish = function(data, opts) {
+  data({ undocumented: true }).remove();
+
   var doclets = data().get();
 
   var methods = doclets
