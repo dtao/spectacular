@@ -128,5 +128,6 @@ exec('jsdoc ' + mainPath + ' --template ' + templatePath, function(error, stdout
   var specSupportDirectory = path.join(specDirectory, 'support');
   ensureDirectoryExists(specSupportDirectory);
   copyFile(path.join(templatePath, 'jasmine.js'), specSupportDirectory);
+  copyFile(path.join(templatePath, 'benchmark.js'), specSupportDirectory);
   copyFile(path.join(templatePath, 'spec_reporter.js'), specSupportDirectory);
 });
