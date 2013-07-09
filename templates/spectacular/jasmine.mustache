@@ -2,9 +2,16 @@ describe("{{title}}", function() {
   {{#methods}}
   describe("{{name}}", function() {
     {{#examples}}
+    {{#throwsError}}
+    it("{{{description}}}", function() {
+      expect(function() { {{{actual}}}; }).toThrow();
+    }).exampleId = {{exampleId}};
+    {{/throwsError}}
+    {{^throwsError}}
     it("{{{description}}}", function() {
       expect({{{actual}}}).toEqual({{{expected}}});
     }).exampleId = {{exampleId}};
+    {{/throwsError}}
 
     {{/examples}}
   });

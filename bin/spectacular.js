@@ -53,7 +53,7 @@ exec('jsdoc ' + mainPath + ' --template ' + templatePath, function(error, stdout
   });
   fs.writeFileSync(path.join(outputDir, 'index.html'), pageHtml);
 
-  var specsTemplate = fs.readFileSync(path.join(templatePath, 'specs.mustache'), 'utf-8');
+  var specsTemplate = fs.readFileSync(path.join(templatePath, 'jasmine.mustache'), 'utf-8');
   var specJs = Mustache.render(specsTemplate, {
     title: config.title,
     methods: data.methods
