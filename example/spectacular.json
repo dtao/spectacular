@@ -1,5 +1,6 @@
 {
   "title": "Spectacular Example",
+  "htmlTitle": "<em>Spec</em>tacular Example",
   "main": "maths",
   "specType": "jasmine",
   "outputDir": "dist",
