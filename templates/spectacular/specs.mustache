@@ -1,0 +1,13 @@
+describe("{{title}}", function() {
+  {{#methods}}
+  describe("{{name}}", function() {
+    {{#examples}}
+    it("{{{description}}}", function() {
+      expect({{{actual}}}).toEqual({{{expected}}});
+    }).exampleId = {{exampleId}};
+
+    {{/examples}}
+  });
+
+  {{/methods}}
+});

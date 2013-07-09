@@ -1,0 +1,10 @@
+{
+  "title": "Spectacular Example",
+  "main": "maths",
+  "outputDir": "example",
+  "stylesheets": [
+    "css/bootstrap.css",
+    "css/bootstrap-responsive.css",
+    "css/styles.css"
+  ]
+}
