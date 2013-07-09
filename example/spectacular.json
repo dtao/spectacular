@@ -1,6 +1,7 @@
 {
   "title": "Spectacular Example",
   "main": "maths",
+  "specType": "jasmine",
   "outputDir": "dist",
   "assetDirs": [
     "css",
