@@ -11,6 +11,9 @@
     <script type="text/javascript" src="spec/support/jasmine.js"></script>
     <script type="text/javascript" src="spec/support/spec_reporter.js"></script>
     <script type="text/javascript" src="spec/{{main}}_spec.js"></script>
+    {{#classes}}
+    <script type="text/javascript" src="spec/{{name}}_spec.js"></script>
+    {{/classes}}
 </head>
 
 <body>

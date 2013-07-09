@@ -115,6 +115,15 @@ exec('jsdoc ' + mainPath + ' --template ' + templatePath, function(error, stdout
 
   fs.writeFileSync(path.join(specDirectory, mainFilename + '_spec.js'), specJs);
 
+  data.classes.forEach(function(pseudoclass) {
+    var classSpec = Mustache.render(specsTemplate, {
+      title: pseudoclass.name,
+      methods: pseudoclass.methods
+    });
+
+    fs.writeFileSync(path.join(specDirectory, pseudoclass.name + '_spec.js'), classSpec);
+  });
+
   var specSupportDirectory = path.join(specDirectory, 'support');
   ensureDirectoryExists(specSupportDirectory);
   copyFile(path.join(templatePath, 'jasmine.js'), specSupportDirectory);
