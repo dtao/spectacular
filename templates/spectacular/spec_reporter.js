@@ -8,7 +8,7 @@ window.addEventListener('load', function() {
       return !result.passed();
     });
 
-    var descriptionCell = row.querySelector('.description');
+    var descriptionCell = row.querySelector('.input');
 
     failures.forEach(function(failure) {
       var message = document.createElement('div');
@@ -32,10 +32,8 @@ window.addEventListener('load', function() {
 
       if (spec.results().passed()) {
         specRow.classList.add('passed');
-        resultCell.textContent = 'passed';
       } else {
         specRow.classList.add('failed');
-        resultCell.textContent = 'failed';
         addFailureInformation(spec, specRow);
       }
     }

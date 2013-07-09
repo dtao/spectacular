@@ -65,22 +65,22 @@
                         <table class="specs">
                             <thead>
                                 <tr>
-                                    <th>Spec</th>
-                                    <th>Result</th>
+                                    <th>Test Case</th>
+                                    <th>Expected Result</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {{#examples}}
                                 <tr class="spec" id="spec-{{exampleId}}">
-                                    <td class="description">{{description}}</td>
-                                    <td class="result"></td>
+                                    <td class="input">{{{actual}}}</td>
+                                    <td class="result">{{{expected}}}</td>
                                 </tr>
                                 {{/examples}}
                                 {{#comparisons}}
                                 {{#examples}}
                                 <tr class="spec" id="spec-{{exampleId}}">
-                                    <td class="description">{{description}}</td>
-                                    <td class="result"></td>
+                                    <td class="input">{{{actual}}}</td>
+                                    <td class="result">same as {{name}}</td>
                                 </tr>
                                 {{/examples}}
                                 {{/comparisons}}
