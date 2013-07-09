@@ -65,7 +65,7 @@ function getExampleCases(tag) {
     var throwsError = expected === '(error)';
 
     var description = throwsError ?
-      ('throws an error for ' + expected) :
+      ('throws an error for ' + actual) :
       ('returns ' + expected + ' for ' + actual);
 
     return {

@@ -34,6 +34,9 @@ var Maths = {
    * Maths.mean([])        // => undefined
    * Maths.mean([1])       // => 1
    * Maths.mean([1, 2, 3]) // => 2
+   *
+   * Maths.mean(null)      // => (error)
+   * Maths.mean(undefined) // => (error)
    */
   mean: function(numbers) {
     return Maths.sum(numbers) / numbers.length || undefined;
@@ -52,6 +55,9 @@ var Maths = {
    * Maths.median([1])            // => 1
    * Maths.median([5, 8, 13])     // => 8
    * Maths.median([5, 8, 13, 21]) // => 10.5
+   *
+   * Maths.median(null)      // => (error)
+   * Maths.median(undefined) // => (error)
    */
   median: function(numbers) {
     if (numbers.length < 2) {
@@ -78,6 +84,9 @@ var Maths = {
    * Maths.mode([])              // => undefined
    * Maths.mode([1])             // => 1
    * Maths.mode([1, 1, 2, 3, 5]) // => 1
+   *
+   * Maths.mode(null)      // => (error)
+   * Maths.mode(undefined) // => (error)
    */
   mode: function(numbers) {
     if (numbers.length === 0) {
