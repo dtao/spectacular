@@ -7,6 +7,10 @@
     <link rel="stylesheet" type="text/css" href="{{{.}}}" />
     {{/stylesheets}}
 
+    {{#scripts}}
+    <script type="text/javascript" src="{{.}}"></script>
+    {{/scripts}}
+
     <script type="text/javascript" src="{{main}}.js"></script>
     <script type="text/javascript" src="spec/support/jasmine.js"></script>
     <script type="text/javascript" src="spec/support/spec_reporter.js"></script>
@@ -72,6 +76,14 @@
                                     <td class="result"></td>
                                 </tr>
                                 {{/examples}}
+                                {{#comparisons}}
+                                {{#examples}}
+                                <tr class="spec" id="spec-{{exampleId}}">
+                                    <td class="description">{{description}}</td>
+                                    <td class="result"></td>
+                                </tr>
+                                {{/examples}}
+                                {{/comparisons}}
                             </tbody>
                         </table>
                         {{/examples.length}}

@@ -6,9 +6,13 @@
   "outputDir": "dist",
   "assetDirs": [
     "css",
-    "img"
+    "img",
+    "js"
   ],
   "stylesheets": [
     "css/styles.css"
+  ],
+  "scripts": [
+    "js/underscore.js"
   ]
 }

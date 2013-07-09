@@ -12,12 +12,15 @@ function Maths() {}
  * @return {number} The sum of the numbers.
  *
  * @examples
- * Maths.sum([])        // => 0
- * Maths.sum([1])       // => 1
- * Maths.sum([1, 2, 3]) // => 6
+ * Maths.sum([])           // => 0
+ * Maths.sum([1])          // => 1
+ * Maths.sum([1, 2, 3])    // => 6
  *
- * Maths.sum(null)      // => (error)
- * Maths.sum(undefined) // => (error)
+ * Maths.sum(null)         // => (error)
+ * Maths.sum(undefined)    // => (error)
+ *
+ * @compareTo underscore
+ * Maths.sum(numbers(100)) // => _.reduce(numbers(100), function(memo, num) { return memo + num; }, 0)
  */
 Maths.sum = function(numbers) {
   var sum = 0;

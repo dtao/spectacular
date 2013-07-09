@@ -20,7 +20,8 @@ function getMethodData(doclet) {
     scope: doclet.scope,
     params: doclet.params,
     returns: doclet.returns,
-    examples: getExamples(doclet)
+    examples: getExamples(doclet),
+    comparisons: getComparisons(doclet)
   };
 }
 
@@ -29,9 +30,7 @@ function getExamples(doclet) {
 }
 
 function getShortExamples(doclet) {
-  if (!doclet.tags) {
-    return [];
-  }
+  if (!doclet.tags) { return []; }
 
   var exampleCases = doclet.tags
     .filter(function(tag) { return tag.originalTitle === 'examples' })
@@ -52,30 +51,55 @@ function getShortExamples(doclet) {
 
 function getExampleCases(tag) {
   var lines = tag.split('\n');
+  return lines.map(getExampleCase);
+}
 
-  return lines.map(function(line) {
-    var parts = line.split(/\s*\/{2}\s*=>\s*/, 2); // matches: '// =>'
+function getExampleCase(text) {
+  var parts = text.split(/\s*\/{2}\s*=>\s*/, 2); // matches: '// =>'
 
-    if (parts.length < 2) {
-      return undefined;
-    }
+  if (parts.length < 2) {
+    return undefined;
+  }
 
-    var actual = parts[0];
-    var expected = parts[1];
-    var throwsError = expected === '(error)';
+  var actual = parts[0];
+  var expected = parts[1];
+  var throwsError = expected === '(error)';
 
-    var description = throwsError ?
-      ('throws an error for ' + actual) :
-      ('returns ' + expected + ' for ' + actual);
+  var description = throwsError ?
+    ('throws an error for ' + actual) :
+    ('returns ' + expected + ' for ' + actual);
 
-    return {
-      exampleId: getExampleId(),
-      description: description,
-      actual: actual,
-      expected: expected,
-      throwsError: throwsError
-    };
-  });
+  return {
+    exampleId: getExampleId(),
+    description: description,
+    actual: actual,
+    expected: expected,
+    throwsError: throwsError
+  };
+}
+
+function getComparisons(doclet) {
+  if (!doclet.tags) { return []; }
+
+  var comparisonCases = doclet.tags
+    .filter(function(tag) { return tag.originalTitle === 'compareTo'; })
+    .map(function(tag) { return getComparisonCase(tag.text); });
+
+  return comparisonCases;
+}
+
+function getComparisonCase(tag) {
+  var lines = tag.split('\n');
+  var name = lines[0];
+
+  return {
+    name: name,
+    examples: lines.slice(1).map(function(text) {
+      var exampleCase = getExampleCase(text);
+      exampleCase.description = 'returns the same result as ' + name + ' for ' + exampleCase.actual;
+      return exampleCase;
+    })
+  };
 }
 
 var exampleIdCounter = 1;

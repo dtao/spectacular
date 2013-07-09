@@ -1,4 +1,12 @@
 describe("{{title}}", function() {
+  function numbers(size) {
+    var arr = [], i = 0;
+    while (i < size) {
+      arr.push(i++);
+    }
+    return arr;
+  }
+
   {{#methods}}
   describe("{{name}}", function() {
     {{#examples}}
@@ -14,6 +22,20 @@ describe("{{title}}", function() {
     {{/throwsError}}
 
     {{/examples}}
+
+    {{#comparisons.length}}
+    {{#comparisons}}
+    describe("compared to {{name}}", function() {
+      {{#examples}}
+      it("{{{description}}}", function() {
+        var actual = {{{actual}}};
+        var expected = {{{expected}}};
+        expect(actual).toEqual(expected);
+      }).exampleId = {{exampleId}};
+      {{/examples}}
+    });
+    {{/comparisons}}
+    {{/comparisons.length}}
   });
 
   {{/methods}}

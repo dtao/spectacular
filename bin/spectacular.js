@@ -98,6 +98,7 @@ exec('jsdoc ' + mainPath + ' --template ' + templatePath, function(error, stdout
     title: config.title,
     htmlTitle: config.htmlTitle || config.title,
     stylesheets: config.stylesheets,
+    scripts: config.scripts,
     main: mainFilename,
     classes: data.classes,
     methods: data.methods
