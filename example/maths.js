@@ -6,17 +6,6 @@
 function Maths() {}
 
 /**
- * This method should show up as an instance method on the 'Maths' class-like
- * thing.
- *
- * @examples
- * new Maths().test() // => undefined
- */
-Maths.prototype.test = function() {
-
-};
-
-/**
  * Adds up all of the numbers in an array.
  *
  * @param {Array.<number>} numbers The numbers to sum up.
@@ -25,7 +14,7 @@ Maths.prototype.test = function() {
  * @examples
  * Maths.sum([])        // => 0
  * Maths.sum([1])       // => 1
- * Maths.sum([1, 2, 3]) // => 5
+ * Maths.sum([1, 2, 3]) // => 6
  *
  * Maths.sum(null)      // => (error)
  * Maths.sum(undefined) // => (error)
