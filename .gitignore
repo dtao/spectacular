@@ -1,2 +1,2 @@
-example/*.html
-example/*.js
+example/dist/*.html
+example/dist/*.js

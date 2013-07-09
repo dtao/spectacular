@@ -1,0 +1,12 @@
+{
+  "name": "spectacular",
+  "description": "Docs, specs, and benchmarks all in one",
+  "version": "0.0.1",
+  "author": "Dan Tao (daniel.tao@gmail.com)",
+  "dependencies": {
+    "mustache": ">= 0.7.2"
+  },
+  "bin": {
+    "spectacular": "bin/spectacular.js"
+  }
+}
