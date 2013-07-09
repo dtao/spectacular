@@ -12,6 +12,9 @@ var Maths = {
    * Maths.sum([])        // => 0
    * Maths.sum([1])       // => 1
    * Maths.sum([1, 2, 3]) // => 6
+   *
+   * Maths.sum(null)      // => (error)
+   * Maths.sum(undefined) // => (error)
    */
   sum: function(numbers) {
     var sum = 0;

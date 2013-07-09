@@ -62,13 +62,18 @@ function getExampleCases(tag) {
 
     var actual = parts[0];
     var expected = parts[1];
-    var description = 'returns ' + expected + ' for ' + actual;
+    var throwsError = expected === '(error)';
+
+    var description = throwsError ?
+      ('throws an error for ' + expected) :
+      ('returns ' + expected + ' for ' + actual);
 
     return {
       exampleId: getExampleId(),
       description: description,
       actual: actual,
-      expected: expected
+      expected: expected,
+      throwsError: throwsError
     };
   });
 }
