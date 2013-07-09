@@ -4,6 +4,13 @@ var fs       = require('fs');
 var path     = require('path');
 var exec     = require('child_process').exec;
 var Mustache = require('mustache');
+var wrench   = require('wrench');
+
+function ensureDirectoryExists(path) {
+  if (!fs.existsSync(path)) {
+    fs.mkdirSync(path);
+  }
+}
 
 function copyFile(source, dest) {
   var filename = path.basename(source);
@@ -12,19 +19,25 @@ function copyFile(source, dest) {
 }
 
 var directory = process.argv[2] || process.cwd();
+var config = JSON.parse(fs.readFileSync(path.join(directory, 'spectacular.json'), 'utf-8'));
+var mainPath = path.join(directory, config.main + '.js');
 var templatePath = path.join(__dirname, '../templates/spectacular');
-exec('jsdoc --recurse ' + directory + ' --template ' + templatePath, function(error, stdout) {
+exec('jsdoc ' + mainPath + ' --template ' + templatePath, function(error, stdout) {
   if (error) {
     console.log('Error: ' + error);
     return;
   }
 
   var methods   = JSON.parse(stdout);
-  var config    = JSON.parse(fs.readFileSync(path.join(directory, 'spectacle.json'), 'utf-8'));
   var outputDir = path.join(directory, config.outputDir);
 
-  if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir);
+  ensureDirectoryExists(outputDir);
+
+  if (config.assetDirs) {
+    config.assetDirs.forEach(function(assetDir) {
+      var folderName = path.basename(assetDir);
+      wrench.copyDirSyncRecursive(path.join(directory, assetDir), path.join(outputDir, folderName));
+    });
   }
 
   copyFile(path.join(directory, config.main + '.js'), outputDir);
@@ -45,5 +58,10 @@ exec('jsdoc --recurse ' + directory + ' --template ' + templatePath, function(er
     title: config.title,
     methods: methods
   });
-  fs.writeFileSync(path.join(outputDir, config.main + '_spec.js'), specJs);
+
+  var specDirectory = path.join(outputDir, 'spec');
+  ensureDirectoryExists(specDirectory);
+
+  var mainFilename = path.basename(config.main);
+  fs.writeFileSync(path.join(specDirectory, mainFilename + '_spec.js'), specJs);
 });

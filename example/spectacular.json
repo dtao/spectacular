@@ -2,6 +2,10 @@
   "title": "Spectacular Example",
   "main": "maths",
   "outputDir": "dist",
+  "assetDirs": [
+    "css",
+    "img"
+  ],
   "stylesheets": [
     "css/bootstrap.css",
     "css/bootstrap-responsive.css",
